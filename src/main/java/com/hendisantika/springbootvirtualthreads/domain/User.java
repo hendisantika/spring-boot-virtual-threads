@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,34 +15,35 @@ import java.util.Objects;
  * Email: hendisantika@gmail.com
  * Telegram : @hendisantika34
  * Date: 11/25/23
- * Time: 11:14
+ * Time: 11:15
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name = "orders")
+@Table(name = "users")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order implements Serializable {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "order_id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderId;
+    private Integer userId;
 
-    private Integer quantity;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "book_id")
-    private Book book;
+    @Column(name = "last_name")
+    private String lastName;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id")
-    private User user;
+    //bi-directional many-to-one association to Order
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    private List<Order> orders;
 
     @Override
     public final boolean equals(Object o) {
@@ -50,8 +52,8 @@ public class Order implements Serializable {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Order order = (Order) o;
-        return getOrderId() != null && Objects.equals(getOrderId(), order.getOrderId());
+        User user = (User) o;
+        return getUserId() != null && Objects.equals(getUserId(), user.getUserId());
     }
 
     @Override
