@@ -68,4 +68,20 @@ public class BookController {
         log.info("saveBook() {} ", uuid);
         return resp;
     }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ResponseEntity<BookDTO> update(@RequestBody BookDTO dto) {
+        UUID uuid = UUID.randomUUID();
+        log.info("updateBook() {} running", uuid);
+
+        Book e = this.bookRepository.findByIsbn(dto.isbn());
+        e.setAuthor(dto.author());
+        e = this.bookRepository.save(e);
+
+        BookDTO bookDto = new BookDTO(e.getBookId(), e.getAuthor(), e.getIsbn(), e.getTitle(), e.getYear());
+
+        log.info("updateBook() {} executed", uuid);
+        return ResponseEntity.ok(bookDto);
+    }
 }
