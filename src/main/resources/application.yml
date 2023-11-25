@@ -1,17 +1,17 @@
 thread-mode: ${THREAD_MODE}
 spring:
   datasource:
-    url: jdbc:postgresql://db-service:5432/postgres?currentSchema=library
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=library
     username: postgres
     password: hendi34
 
   jpa:
-    generate-ddl: 'false'
+    generate-ddl: true
     database: POSTGRESQL
     properties:
       hibernate:
         default_schema: library
-    show-sql: 'false'
+    show-sql: true
     hibernate:
       ddl-auto: none
   sql:
