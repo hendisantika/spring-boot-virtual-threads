@@ -7,9 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,5 +47,25 @@ public class BookController {
     @GetMapping(value = "/simple", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Book>> getAllSimple() {
         return ResponseEntity.ok(this.bookRepository.findAll());
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ResponseEntity<BookDTO> saveBook(@RequestBody BookDTO dto) {
+        UUID uuid = UUID.randomUUID();
+        log.info("saveBook() {} running", uuid);
+
+        Book e = new Book();
+        e.setBookId(dto.bookId());
+        e.setIsbn(dto.isbn());
+        e.setTitle(dto.title());
+        e.setAuthor(dto.author());
+        e.setYear(dto.year());
+        e = bookRepository.save(e);
+
+        ResponseEntity<BookDTO> resp = ResponseEntity.ok(new BookDTO(e.getBookId(), e.getAuthor(), e.getIsbn(), e.getTitle(), e.getYear()));
+
+        log.info("saveBook() {} ", uuid);
+        return resp;
     }
 }
