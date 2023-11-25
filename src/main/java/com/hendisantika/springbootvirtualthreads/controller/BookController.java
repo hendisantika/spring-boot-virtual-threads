@@ -1,5 +1,6 @@
 package com.hendisantika.springbootvirtualthreads.controller;
 
+import com.hendisantika.springbootvirtualthreads.domain.Book;
 import com.hendisantika.springbootvirtualthreads.dto.BookDTO;
 import com.hendisantika.springbootvirtualthreads.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,10 @@ public class BookController {
 
         log.info("getAll() {} executed", uuid);
         return list;
+    }
+
+    @GetMapping(value = "/simple", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Book>> getAllSimple() {
+        return ResponseEntity.ok(this.bookRepository.findAll());
     }
 }
