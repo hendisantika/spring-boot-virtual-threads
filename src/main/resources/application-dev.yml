@@ -1,0 +1,14 @@
+thread-mode: virtual
+
+spring:
+
+  datasource:
+    url: jdbc:postgresql://localhost:6000/postgres?currentSchema=library
+    username: postgres
+    password: postgres
+  sql:
+    init:
+      platform: postgres
+
+server:
+  port: '8081'
