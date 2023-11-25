@@ -1,0 +1,36 @@
+thread-mode: ${THREAD_MODE}
+spring:
+  datasource:
+    url: jdbc:postgresql://db-service:5432/postgres?currentSchema=library
+    username: postgres
+    password: hendi34
+
+  jpa:
+    generate-ddl: 'false'
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        default_schema: library
+    show-sql: 'false'
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      platform: postgres
+
+server:
+  port: '8081'
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: spring-jdbc
