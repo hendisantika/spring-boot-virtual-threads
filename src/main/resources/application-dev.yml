@@ -9,6 +9,9 @@ spring:
   sql:
     init:
       platform: postgres
+  threads:
+    virtual:
+      enabled: true
 
 server:
   port: '8081'
